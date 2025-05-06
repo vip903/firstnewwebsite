@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "Tourist Places";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // if using layout
+}
+
+<style>
+    body {
+        background: #f0f8ff;
+        font-family: Arial, sans-serif;
+    }
+
+    .tourist-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+        .tourist-container h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+    .tourist-card {
+        display: inline-block;
+        width: 220px;
+        margin: 10px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background-color: #fefefe;
+        transition: transform 0.2s;
+    }
+
+        .tourist-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .tourist-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .tourist-card a {
+            text-decoration: none;
+            color: #2980b9;
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+</style>
+
+<div class="tourist-container">
+    <h2>Popular Tourist Places</h2>
+
+    <div class="tourist-card">
+        <img src="~/images/taj.jpeg" alt="Taj Mahal" />
+        <a asp-controller="TouristController1" asp-action="TajMahal">Taj Mahal (Agra)</a>
+    </div>
+
+    <div class="tourist-card">
+        <img src="~/images/redfort.jpeg" alt="Red Fort" />
+        <a asp-controller="TouristController1" asp-action="RedFort">Red Fort (Delhi)</a>
+    </div>
+
+    <div class="tourist-card">
+        <img src="~/images/charminar.jpeg" alt="Charminar" />
+        <a asp-controller="TouristController1" asp-action="Charminar">Charminar (Hyderabad)</a>
+    </div>
+</div>
