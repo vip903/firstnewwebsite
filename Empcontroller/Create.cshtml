@@ -1,0 +1,205 @@
+﻿@model corevipul1.Models.Tblemployee
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Tblemployee Registration</h4>
+<hr />
+<form asp-action="Create" enctype="multipart/form-data"></form>
+
+
+<div style="background-image: url('https://yourimageurl.com/image.jpg'); background-size: cover; background-position: center; padding: 30px; border-radius: 10px; box-shadow: 0px 0px 15px rgba(0,0,0,0.2);">
+
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Name and Age (Two textboxes in one row) -->
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Age" class="control-label"></label>
+                    <input asp-for="Age" class="form-control" />
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Salary -->
+            <div class="form-group">
+                <label asp-for="Salary" class="control-label"></label>
+                <input asp-for="Salary" class="form-control" />
+                <span asp-validation-for="Salary" class="text-danger"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" type="password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <!-- DateTime -->
+            <div class="form-group">
+                <label asp-for="Datetime" class="control-label"></label>
+                <input asp-for="Datetime" class="form-control" type="datetime-local" />
+                <span asp-validation-for="Datetime" class="text-danger"></span>
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="form-group">
+                <label asp-for="Dob" class="control-label"></label>
+                <input asp-for="Dob" class="form-control" type="date" />
+                <span asp-validation-for="Dob" class="text-danger"></span>
+            </div>
+
+            <!-- Gender -->
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                @foreach (var item in ViewBag.GenderList)
+                {
+                    <label class="mr-3">
+                        <input type="radio" name="Gender" value="@item.Text" /> @item.Text
+                    </label>
+                }
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+
+            <!-- Hobbies -->
+            <div class="form-group">
+                <label asp-for="Hobbies" class="control-label"></label>
+                @foreach (var h in ViewBag.HobbiesList)
+                {
+                    <label class="mr-3">
+                        <input type="checkbox" name="hobbies" value="@h.Hname" /> @h.Hname
+                    </label>
+                }
+                <span asp-validation-for="Hobbies" class="text-danger"></span>
+            </div>
+
+            <!-- Country -->
+            <div class="form-group">
+                <label>Country</label>
+                <select id="ddlCountry" name="Country" class="form-control">
+                    <option value="">--Select--</option>
+                    @foreach (var country in ViewBag.CountryList)
+                    {
+                        <option value="@country.Value">@country.Text</option>
+                    }
+                </select>
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+
+            <!-- State -->
+            <div class="form-group">
+                <label>State</label>
+                <select id="ddlState" name="State" class="form-control">
+                    <option value="">--Select--</option>
+                </select>
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+
+            <!-- City -->
+            <div class="form-group">
+                <label>City</label>
+                <select id="ddlCity" name="City" class="form-control">
+                    <option value="">--Select--</option>
+                </select>
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+
+                <div class="form-group">
+                    <label asp-for="UploadFile" class="control-label">Upload Photo</label>
+                    <input asp-for="UploadFile" type="file" class="form-control" />
+                    <span asp-validation-for="UploadFile" class="text-danger"></span>
+                </div>
+
+            <!-- Submit Button -->
+            <div class="form-group">
+                <input type="submit" value="Register" class="btn btn-primary" />
+            </div>
+            <br />
+                <div class="form-group">
+                    <a asp-controller="EmployeeController1" asp-action="Ulogin" class="btn btn-success">Ulogin</a>
+                </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // On Country Change - Get States
+            $("#ddlCountry").change(function () {
+                state();
+            });
+
+            // On State Change - Get Cities
+            $("#ddlState").change(function () {
+                city();
+            });
+        });
+
+        // Fetch States based on Country
+        function state() {
+            $.ajax({
+                url: '/EmployeeController1/GetStates',
+                type: 'post',
+                data: { cid: $("#ddlCountry").val() },
+                success: function (data) {
+                    $("#ddlState").empty();
+                    $("#ddlState").append($('<option></option>').html("--Select--").val(""));
+                    $.each(data, function (i, state) {
+                        $("#ddlState").append($('<option></option>').val(state.sid).html(state.sname));
+                    });
+                },
+                error: function () {
+                    alert('Error loading states!');
+                }
+            });
+        }
+
+        // Fetch Cities based on State
+        function city() {
+            $.ajax({
+                url: '/EmployeeController1/GetCities',
+                type: 'post',
+                data: { sid: $("#ddlState").val() },
+                success: function (data) {
+                    $("#ddlCity").empty();
+                    $("#ddlCity").append($('<option></option>').html("--Select--").val("")); 
+                    $.each(data, function (i, city) {
+                        $("#ddlCity").append($('<option></option>').val(city.zid).html(city.zname));
+                    });
+                },
+                error: function () {
+                    alert('Error loading cities!');
+                }
+            });
+        }
+    </script>
+}
